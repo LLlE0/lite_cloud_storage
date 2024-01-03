@@ -3,7 +3,7 @@
 <head>
     <title>Registration and Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="../auth.js">
+    <script src="../js/auth.js"></script>
 </head>
 <body>
     <div class="container">
@@ -12,7 +12,7 @@
                 <h2 class="text-center mt-5">Registration and Login</h2>
                 <div class="card mt-3">
                     <div class="card-body">
-                        <form onsubmit="submitForm(event)">
+                        
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Enter username">
@@ -21,8 +21,8 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" onclick="submit">Submit</button>
-                        </form>
+                            <button type="submit" class="btn btn-primary btn-block" onclick="submit(event)">Submit</button>
+                     
                     </div>
                 </div>
             </div>
