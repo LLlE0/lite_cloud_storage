@@ -4,15 +4,13 @@ import (
 	"github.com/LLlE0/lite_cloud_storage/pkg/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"html/template"
-	"log"
 	"net/http"
 	"path"
 )
 
 type Handler struct {
 	Services *service.Service
-	Server   *Server
+	Server   *service.Server
 }
 
 func NewHandler(services *service.Service) *Handler {
@@ -31,34 +29,19 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	})
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Get("/auth", func(w http.ResponseWriter, r *http.Request) {
-		t, err := template.ParseFiles("../frontend/static/auth.html")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		t.Execute(w, "")
-
-	})
+	r.Get("/auth", Auth)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Post("/auth/try", func(w http.ResponseWriter, r *http.Request) {
-
-		log.Print(r.Body)
-		log.Print("ТОЧНО ЭТОТ ВЫЗВАЛСЯ")
-		http.Redirect(w, r, "/index", http.StatusSeeOther)
-
-	})
+	r.Post("/auth/try", AuthTry)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Get("/index", func(w http.ResponseWriter, r *http.Request) {
-		t, err := template.ParseFiles("../frontend/static/index.html")
-		if err != nil {
-			log.Fatal(err)
-		}
+	r.Get("/", MainPage)
 
-		t.Execute(w, "")
-	})
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	r.Get("/registration", Registration)
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	r.Post("/registration/new", RegNew)
 
 	return r
 }

@@ -14,7 +14,7 @@ func main() {
 
 	services := service.NewService(viper.GetString("ip"), viper.GetString("port"))
 	handlers := handler.NewHandler(services)
-	srv := new(handler.Server)
+	srv := new(service.Server)
 	services.RunApp()
 	if err := srv.Run(viper.GetString("port"), viper.GetString("ip"), handlers.InitRoutes()); err != nil {
 		log.Fatalf("Error while running http server: %s", err.Error())

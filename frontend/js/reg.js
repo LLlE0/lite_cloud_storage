@@ -3,7 +3,7 @@ async function submit(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     try {
-        const response = await fetch('/auth/try', {
+        const response = await fetch('/registration/new', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
@@ -17,7 +17,7 @@ async function submit(event) {
             }
         } else {
             const errorText = await response.text();
-            alert(`Login failed: ${errorText}`);
+            alert(`Registration failed: ${errorText}`);
         }
     } catch (error) {
         console.error('Error:', error);
