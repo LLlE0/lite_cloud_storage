@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/LLlE0/lite_cloud_storage/pkg/dbworker"
 	"github.com/LLlE0/lite_cloud_storage/pkg/handler"
 	"github.com/LLlE0/lite_cloud_storage/pkg/service"
 	"github.com/spf13/viper"
@@ -13,8 +14,9 @@ func main() {
 	}
 
 	services := service.NewService(viper.GetString("ip"), viper.GetString("port"))
-	handlers := handler.NewHandler(services)
+	DBInstance := dbworker.NewDBInstance()
 	srv := new(service.Server)
+	handlers := handler.NewHandler(services, srv, DBInstance)
 	services.RunApp()
 	if err := srv.Run(viper.GetString("port"), viper.GetString("ip"), handlers.InitRoutes()); err != nil {
 		log.Fatalf("Error while running http server: %s", err.Error())

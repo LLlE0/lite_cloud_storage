@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"database/sql"
 	"github.com/LLlE0/lite_cloud_storage/pkg/service"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -9,12 +10,13 @@ import (
 )
 
 type Handler struct {
-	Services *service.Service
-	Server   *service.Server
+	Services   *service.Service
+	Server     *service.Server
+	DBInstance *sql.DB
 }
 
-func NewHandler(services *service.Service) *Handler {
-	return &Handler{Services: services}
+func NewHandler(services *service.Service, server *service.Server, DB *sql.DB) *Handler {
+	return &Handler{Services: services, Server: server, DBInstance: DB}
 }
 
 func (h *Handler) InitRoutes() *chi.Mux {
@@ -32,7 +34,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	r.Get("/auth", Auth)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Post("/auth/try", AuthTry)
+	r.Post("/auth/try", h.AuthTry)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	r.Get("/", MainPage)
@@ -41,7 +43,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	r.Get("/registration", Registration)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Post("/registration/new", RegNew)
+	r.Post("/registration/new", h.RegNew)
 
 	return r
 }

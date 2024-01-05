@@ -24,3 +24,10 @@ func (s *Server) Run(port string, ip string, handler http.Handler) error {
 func (s *Server) Shutdown(ctx context.Context) error {
 	return s.httpServer.Shutdown(ctx)
 }
+
+// CREATE TABLE "users" (
+// 	"id"	INTEGER,
+// 	"username"	TEXT NOT NULL UNIQUE,
+// 	"password"	TEXT NOT NULL,
+// 	PRIMARY KEY("id" AUTOINCREMENT)
+// );
