@@ -35,9 +35,11 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 	session, _ := h.SessionsStore.Get(r, "auth-session")
 	//field of a session which represents the fact of users authentification
 	session.Values["authenticated"] = true
+	session.Values["password"] = hashPwd(creds.Password)
+	session.Values["username"] = creds.Username
 	//save and send the cookie
 	session.Save(r, w)
-	json.NewEncoder(w).Encode(map[string]string{"redirect": "/"})
+	json.NewEncoder(w).Encode(map[string]string{"redirect": fmt.Sprintf("/" + creds.Username)})
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -75,11 +77,25 @@ func (h *Handler) AuthTry(w http.ResponseWriter, r *http.Request) {
 	//create session
 	session, _ := h.SessionsStore.Get(r, "auth-session")
 	session.Values["authenticated"] = true
+	session.Values["username"] = creds.Username
+	session.Values["password"] = hashPwd(creds.Password)
 	session.Save(r, w)
 	//log message when the user logged in
 	log.Print("New session: " + creds.Username + "for " + fmt.Sprint(session.Options.MaxAge))
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"redirect": "/"})
+	json.NewEncoder(w).Encode(map[string]string{"redirect": fmt.Sprintf("/" + creds.Username)})
+
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
+	session, _ := h.SessionsStore.Get(r, "auth-session")
+	session.Values["authenticated"] = 0
+	session.Options.MaxAge = -1
+
+	log.Print("Logging out")
+	session.Save(r, w)
 
 }
 

@@ -52,8 +52,16 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	r.Post("/auth/try", h.AuthTry)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	r.Get("/", h.MainPage)
+	r.Route("/{user}", func(r chi.Router) {
+		r.Get("/", h.MainPage)
+		r.Post("/getfile", h.GetFile)
+		r.Post("/getfolder", h.GetFolder)
 
+		r.Post("/addfile", h.UploadFile)
+		r.Post("/addfolder", h.UploadFolder)
+
+		r.Put("/logout", h.Logout)
+	})
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	r.Get("/registration", h.Registration)
 
