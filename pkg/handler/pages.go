@@ -30,17 +30,13 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 //////////////////////////////////////////////////////////////////////
 
 func (h *Handler) MainPage(w http.ResponseWriter, r *http.Request) {
-	//Check whether the auth session is active
+	//Check whether the auth session is active, if it isnt - redirect
 	session, _ := h.SessionsStore.Get(r, "auth-session")
-
-	//If it isn't, redirect to the auth pag
 	if auth, ok := session.Values["authenticated"].(bool); !ok && !auth {
-
 		http.Redirect(w, r, "/auth", http.StatusFound)
 		return
 	}
 	username := path.Base(r.URL.Path)
-
 	//selecting the user with such login from the DB
 	row := h.DBInstance.QueryRow("SELECT password FROM users WHERE username = ?", username)
 	var storedHashedPwd string
@@ -68,7 +64,7 @@ func (h *Handler) MainPage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	t.Execute(w, r.URL.Path[1:])
+	t.Execute(w, username)
 }
 
 //////////////////////////////////////////////////////////////////////

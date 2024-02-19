@@ -81,7 +81,7 @@ func (h *Handler) AuthTry(w http.ResponseWriter, r *http.Request) {
 	session.Values["password"] = hashPwd(creds.Password)
 	session.Save(r, w)
 	//log message when the user logged in
-	log.Print("New session: " + creds.Username + "for " + fmt.Sprint(session.Options.MaxAge))
+	log.Print("New session: " + creds.Username + " for " + fmt.Sprint(session.Options.MaxAge) + " seconds")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"redirect": fmt.Sprintf("/" + creds.Username)})
 

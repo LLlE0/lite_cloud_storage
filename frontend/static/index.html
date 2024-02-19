@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../js/main.js"></script> 
+    <script>
+        window.onload = function() {
+          req();
+        };
+      </script>
     <title>Main page</title>
 </head>
 <body>
     <h1>Main page</h1>
-    <h1>Hi, {{.}}! It's your storage.</h1>
+    <h1>Hi, {{.}}! It's your very own storage.</h1>
+ 
+    <div id = "list">
+    </div>
 </body>
 </html>
