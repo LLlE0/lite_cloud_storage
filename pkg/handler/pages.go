@@ -53,8 +53,6 @@ func (h *Handler) MainPage(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	log.Print(storedHashedPwd)
-	log.Print(session.Values["password"])
 	//if passwords mismatch, send this error, else create session
 	if password, ok := session.Values["password"].(string); ok && storedHashedPwd != password {
 		http.Error(w, "Hacker detected!", http.StatusUnauthorized)

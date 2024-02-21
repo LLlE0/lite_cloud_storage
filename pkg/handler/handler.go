@@ -55,11 +55,10 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	r.Route("/{user}", func(r chi.Router) {
 		r.Get("/", h.MainPage)
 		r.Post("/", h.GetFolderData)
-		r.Get("/{folder:.*}", h.MainPage)
-		r.Post("/{folder:.*}", h.GetFolderData)
+		r.Get("/*", h.MainPage)
+		r.Post("/addfile/*", h.UploadFile)
+		r.Post("/folder/*", h.GetFolderData)
 		r.Post("/getfile/*", h.GetFile)
-		r.Post("/getfolder/*", h.GetFolder)
-		r.Post("/addfile", h.UploadFile)
 		r.Post("/addfolder", h.AddFolder)
 
 		r.Put("/logout", h.Logout)

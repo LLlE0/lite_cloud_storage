@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/LLlE0/lite_cloud_storage/pkg/fileworker"
 )
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -29,7 +31,7 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 	//inserting the user into the database (error if something goes wrong)
 	_, err = h.DBInstance.Exec(`INSERT INTO users (username, password) VALUES (?, ?)`, creds.Username, hashPwd(creds.Password))
 	if err != nil {
-		log.Fatalf("Failed to execute query: %v", err)
+		log.Printf("Failed to execute query: %v", err)
 	}
 	//start a session
 	session, _ := h.SessionsStore.Get(r, "auth-session")
@@ -37,6 +39,7 @@ func (h *Handler) RegNew(w http.ResponseWriter, r *http.Request) {
 	session.Values["authenticated"] = true
 	session.Values["password"] = hashPwd(creds.Password)
 	session.Values["username"] = creds.Username
+	fileworker.CreateDir(creds.Username)
 	//save and send the cookie
 	session.Save(r, w)
 	json.NewEncoder(w).Encode(map[string]string{"redirect": fmt.Sprintf("/" + creds.Username)})
