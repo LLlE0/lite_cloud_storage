@@ -1,5 +1,5 @@
 ip: "127.0.0.1"
 port: "11130"
 db: "../db/accounts.db"
-time: 50
+time: 5000
 store: "../_storage/"

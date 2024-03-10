@@ -1,10 +1,10 @@
 package service
 
 import (
-// "errors"
-// "log"
-// "os/exec"
-// "runtime"
+	"errors"
+	"log"
+	"os/exec"
+	"runtime"
 )
 
 type Service struct {
@@ -20,26 +20,26 @@ func (s *Service) SetUrl(url string) {
 }
 
 func (s *Service) RunApp() error {
-	//var cmd string
-	//
-	// ops := runtime.GOOS
-	// switch ops {
-	// case "windows":
-	// 	cmd = "start "
-	// case "darwin":
-	// 	cmd = "open "
-	// case "linux":
-	// 	cmd = "xdg-open "
-	// default:
-	// 	return errors.New("error in OS switch")
-	// }
-	//
-	// log.Print(cmd, s.url)
-	// c := exec.Command("cmd", "/C", cmd, s.url)
-	// err := c.Start()
-	// if err != nil {
-	// 	return err
-	// }
+	var cmd string
+
+	ops := runtime.GOOS
+	switch ops {
+	case "windows":
+		cmd = "start "
+	case "darwin":
+		cmd = "open "
+	case "linux":
+		cmd = "xdg-open "
+	default:
+		return errors.New("error in OS switch")
+	}
+
+	log.Print(cmd, s.url)
+	c := exec.Command("cmd", "/C", cmd, s.url)
+	err := c.Start()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

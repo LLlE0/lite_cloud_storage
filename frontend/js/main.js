@@ -1,4 +1,5 @@
   async function req() {
+    document.getElementById("name").textContent = window.location.pathname.split('/')[1] 
     try {
     const response = await fetch(window.location.pathname, {
         method: 'POST',
@@ -23,9 +24,9 @@
             list = document.createElement('ul')
             ListInst.appendChild(list)
             strs = data['str']
-            strs.forEach((item) => {
+            strs.forEach((itemUnit) => {
               const listItem = document.createElement('li');
-              listItem.textContent = item;
+              listItem.innerHTML=(`<a class="download-file" href="#" data-file="` + window.location.pathname.split('/')[1] + "/getfile/" + itemUnit+`">`+itemUnit+`</a>`)              
               list.appendChild(listItem);
           });
       }}
@@ -36,3 +37,28 @@
 } catch (error) {
     console.error('Error:', error);
 }}
+
+  $(document).ready(function() {
+    // Привязываем обработчик событий к родительскому элементу
+    $("#list").on("click", "a.download-file", function(event) {
+      event.preventDefault(); // Отменяем стандартное поведение браузера при нажатии на ссылку
+  
+      var dataAddr = $(this).attr("data-file"); // Получаем адрес файла с помощью метода .attr()
+      var fileName = $(this).text(); 
+     $.ajax({
+    url: dataAddr,
+    method: 'POST',
+    xhrFields: {
+        responseType: 'blob'
+    },
+    success: function(data) {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(data);
+        a.href = url;
+        a.download = fileName; 
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+});  
+    });
+});

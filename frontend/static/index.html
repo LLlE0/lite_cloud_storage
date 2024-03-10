@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../js/main.js"></script> 
-    <script src="../js/filesender.js"></script> 
+    <script src="../js/jquery/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/filesender.js"></script>
+
     <script>
       window.onload = function() {
         req();
+        fs();
       };
-      </script>
+    </script>
     <title>Main page</title>
 </head>
 <body>
     <h1>Main page</h1>
-    <h1>Hi, {{.}}! It's your very own storage.</h1>
+    <h1>Hi, <span id="name"></span>! It's your very own storage.</h1>
     <input type="file" id="file-input" />
     <button type="button" id="submit-button">Upload</button>
-    <div id = "list">
+    <div id="list">
     </div>
 </body>
 </html>
-

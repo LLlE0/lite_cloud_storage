@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"github.com/LLlE0/lite_cloud_storage/pkg/service"
 	"github.com/go-chi/chi"
-	//"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/middleware"
 	"github.com/gorilla/sessions"
 	"net/http"
 	"path"
@@ -33,7 +33,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 	//init new router
 	r := chi.NewRouter()
 	// redirect /auth/ to /auth
-	//r.Use(middleware.RedirectSlashes)
+	r.Use(middleware.RedirectSlashes)
 	//seek for js in the 'js' folder
 	fs := http.FileServer(http.Dir("../frontend/js/"))
 	//seek for files all around the /frontend/ folder
@@ -57,9 +57,7 @@ func (h *Handler) InitRoutes() *chi.Mux {
 		r.Post("/", h.GetFolderData)
 		r.Get("/*", h.MainPage)
 		r.Post("/addfile/*", h.UploadFile)
-		r.Post("/folder/*", h.GetFolderData)
 		r.Post("/getfile/*", h.GetFile)
-		r.Post("/addfolder", h.AddFolder)
 
 		r.Put("/logout", h.Logout)
 	})
@@ -71,3 +69,4 @@ func (h *Handler) InitRoutes() *chi.Mux {
 
 	return r
 }
+
